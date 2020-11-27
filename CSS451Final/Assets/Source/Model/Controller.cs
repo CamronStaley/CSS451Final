@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
+    public GameObject ballLauncher;
     public GameObject handle;
-    private HandleScript handleScript;
+    private BallLauncherScript launcherScript;
     // Start is called before the first frame update
     void Start()
     {
-        handleScript = handle.GetComponent<HandleScript>();
+        launcherScript = ballLauncher.GetComponent<BallLauncherScript>();
     }
 
     // Update is called once per frame
@@ -23,12 +24,12 @@ public class Controller : MonoBehaviour
             {
                 if(hitInfo.collider.gameObject == handle)
                 {
-                    handleScript.Select(true);
+                    launcherScript.Select(true);
                 }
             }
         } else
         {
-            handleScript.Select(false);
+            launcherScript.Select(false);
         }
     }
 }
