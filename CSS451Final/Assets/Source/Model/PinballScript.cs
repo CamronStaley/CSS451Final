@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class PinballScript : MonoBehaviour
 {
+
+    public float boundFactor; // larger the factor smaller the objects bounds
     public GameObject platform;
     public Vector3 dir;
     private float velocity;
     private Vector3 initPos;
+    private Vector3 nextPos;
+
     // Start is called before the first frame update
     void Start()
     {
-        dir = transform.up;
-        dir = dir.normalized;
         velocity = 0f;
         initPos = transform.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (velocity == 0) //if ball is at rest then set it to the start
         {
@@ -27,15 +29,35 @@ public class PinballScript : MonoBehaviour
         }
         else
         {
-            float move = velocity * Time.deltaTime;
-            transform.Translate(dir * move);
+            transform.position += velocity * Time.deltaTime * dir;
         }
+    }
+
+    public bool CheckForPass(Transform p)
+    {
+        nextPos = transform.position + velocity * Time.deltaTime * dir;
+        var currentDir = p.position - transform.position;
+        var nextDir = nextPos - p.position;
+        var p_norm = -p.forward;
+        return (Vector3.Dot(currentDir, p_norm) > 0f && Vector3.Dot(nextDir, p_norm) < 0f);
+    }
+
+    public void ReflectDir(Vector3 n)
+    {  // WATCH OUT!! mDir is point towards n (instead of away!)
+        float vDotn = Vector3.Dot(-dir, n);
+        SetDir(2 * vDotn * n + dir);
     }
 
     // takes in a normalized direction 
     public void SetDir(Vector3 newDir)
     {
         dir = newDir;
+    }
+
+    //returns the normalized direction of the ball
+    public Vector3 GetDir()
+    {
+        return dir;
     }
 
     public float GetVelocity()

@@ -22,7 +22,7 @@ public class BallLauncherScript : MonoBehaviour
     void Start()
     {
         handleInit = handle.localPosition;
-        handleMaxX =handleInit.x;
+        handleMaxX = handleInit.x;
         handleMinX = bottom.localPosition.x;
         ballScript = pinball.GetComponent<PinballScript>();
     }
@@ -46,7 +46,7 @@ public class BallLauncherScript : MonoBehaviour
             velocity = (handleInit.x - handle.localPosition.x) * velocityFactor;
             if(ballScript.GetVelocity() == 0) // if the ball is currently at rest
             {
-                ballScript.SetDir(platform.forward.normalized); // set it's direction to the same as the platform
+                ballScript.SetDir(platform.forward); // set it's direction to the same as the platform
                 ballScript.SetVelocity(velocity); //give it the velocity that the platform traveled 
             }
             handle.localPosition = handleInit;
