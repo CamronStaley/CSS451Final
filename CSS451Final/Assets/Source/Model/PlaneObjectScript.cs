@@ -12,10 +12,4 @@ public class PlaneObjectScript : MonoBehaviour
             children.gameObject.AddComponent<PlaneRedirectionScript>();
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

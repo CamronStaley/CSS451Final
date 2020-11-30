@@ -23,14 +23,18 @@ public class PinballScript : MonoBehaviour
     {
         if (velocity == 0) //if ball is at rest then set it to the start
         {
-            Vector3 pos = transform.position;
-            pos.y = platform.transform.position.y + (transform.localScale.y / 2);
-            transform.position = pos;
+            SetInit();
         }
         else
         {
             transform.position += velocity * Time.deltaTime * dir;
         }
+    }
+
+    public void SetInit()
+    {
+        initPos.y = platform.transform.position.y + (transform.localScale.y / 2);
+        transform.position = initPos;
     }
 
     public bool CheckForPass(Transform p)
