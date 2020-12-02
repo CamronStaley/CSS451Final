@@ -17,10 +17,12 @@ public class PinballScript : MonoBehaviour
     {
         velocity = 0f;
         initPos = transform.position;
+        dir = Vector3.up;
     }
 
     void FixedUpdate()
     {
+        CheckBounds();
         if (velocity == 0) //if ball is at rest then set it to the start
         {
             SetInit();
@@ -28,6 +30,14 @@ public class PinballScript : MonoBehaviour
         else
         {
             transform.position += velocity * Time.deltaTime * dir;
+        }
+    }
+
+    public void CheckBounds()
+    {
+        if(Mathf.Abs(transform.localPosition.x) > 35f || Mathf.Abs(transform.localPosition.y) > 50f)
+        {
+            SetInit();
         }
     }
 

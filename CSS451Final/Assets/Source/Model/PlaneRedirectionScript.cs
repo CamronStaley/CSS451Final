@@ -20,7 +20,7 @@ public class PlaneRedirectionScript : MonoBehaviour
         {
             float d = Vector3.Distance(transform.position, ball.transform.position);
             Vector3 onBarrier = ball.transform.position - (-transform.forward) * d;
-            if(Vector3.Distance(onBarrier, transform.position) < transform.localScale.x / 1.2f)
+            if(Vector3.Distance(onBarrier, transform.position) < transform.localScale.x / 1.1)
             {
                 if (Vector3.Dot(ballScript.GetDir(), -transform.forward) < 0f)
                 {
