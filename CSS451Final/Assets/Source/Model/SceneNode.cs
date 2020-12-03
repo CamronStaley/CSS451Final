@@ -8,19 +8,64 @@ public class SceneNode : MonoBehaviour {
     
     public Vector3 NodeOrigin = Vector3.zero;
     public List<NodePrimitive> PrimitiveList;
-    public Transform AxisFrame = null;
-    public Camera secondaryCamera = null;
-    public float yOffset = 0;
+    public bool LeftArm = false;
+    public float endRot;
+    private Vector3 initialRot;
+    private Vector3 initialLocalRot;
+    public float rotationSpeed;
     // Use this for initialization
     protected void Start () {
         InitializeSceneNode();
+        initialRot = transform.eulerAngles;
+        initialLocalRot = transform.localEulerAngles;
         // Debug.Log("PrimitiveList:" + PrimitiveList.Count);
+
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
-	}
+	void FixedUpdate () {
+        if (LeftArm)
+        {
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.rotation *= Quaternion.Euler(0, 0, Time.deltaTime * rotationSpeed);
+                if (transform.localEulerAngles.z < 360f - endRot && transform.localEulerAngles.z > initialRot.z)
+                {
+                    var rot = transform.localEulerAngles;
+                    rot.z = -endRot;
+                    transform.localEulerAngles = rot;
+                }
+            }
+            else
+            {
+                transform.rotation *= Quaternion.Euler(0, 0, Time.deltaTime * -rotationSpeed);
+                if (transform.localEulerAngles.z >= initialLocalRot.z && transform.localEulerAngles.z < 360f - endRot)
+                {
+                    transform.eulerAngles = initialRot;
+                }
+            } 
+        } else // right arm
+        {
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.rotation *= Quaternion.Euler(0, 0, Time.deltaTime * rotationSpeed);
+                if (transform.localEulerAngles.z < 360f - endRot && transform.localEulerAngles.z > initialRot.z)
+                {
+                    var rot = transform.localEulerAngles;
+                    rot.z = -endRot;
+                    transform.localEulerAngles = rot;
+                }
+            }
+            else
+            {
+                transform.rotation *= Quaternion.Euler(0, 0, Time.deltaTime * -rotationSpeed);
+                if (transform.localEulerAngles.z >= initialLocalRot.z && transform.localEulerAngles.z < 360f - endRot)
+                {
+                    transform.eulerAngles = initialRot;
+                }
+            }
+        }
+    }
 
     private void InitializeSceneNode()
     {
@@ -34,6 +79,7 @@ public class SceneNode : MonoBehaviour {
         Matrix4x4 trs = Matrix4x4.TRS(transform.localPosition, transform.localRotation, transform.localScale);
         
         mCombinedParentXform = parentXform * orgT * trs;
+
 
         // propagate to all children
         foreach (Transform child in transform)
@@ -49,23 +95,6 @@ public class SceneNode : MonoBehaviour {
         foreach (NodePrimitive p in PrimitiveList)
         {
             p.LoadShaderMatrix(ref mCombinedParentXform);
-        }
-
-        // Compute AxisFrame 
-        if (AxisFrame != null)
-        {
-            AxisFrame.transform.localPosition = mCombinedParentXform.GetColumn(3);
-            AxisFrame.transform.localRotation = transform.rotation;
-            AxisFrame.transform.up = transform.up;
-        }
-
-
-        if (secondaryCamera != null)
-        {
-            Vector3 location = mCombinedParentXform.GetColumn(3);
-            location.y -= yOffset;
-            secondaryCamera.transform.localPosition = location;
-            secondaryCamera.transform.forward = -transform.up;
         }
     }
 }

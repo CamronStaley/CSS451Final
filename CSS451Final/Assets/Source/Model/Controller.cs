@@ -13,6 +13,8 @@ public class Controller : MonoBehaviour
         launcherScript = ballLauncher.GetComponent<BallLauncherScript>();
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
