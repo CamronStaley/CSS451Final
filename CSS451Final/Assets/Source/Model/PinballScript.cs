@@ -56,6 +56,15 @@ public class PinballScript : MonoBehaviour
         return (Vector3.Dot(currentDir, p_norm) > 0f && Vector3.Dot(nextDir, p_norm) < 0f);
     }
 
+    public bool CheckForPassWithPaddles(Vector3 pos, Vector3 norm)
+    {
+        nextPos = transform.position + velocity * Time.deltaTime * dir;
+        var currentDir = pos - transform.position;
+        var nextDir = nextPos - pos;
+        var p_norm = norm;
+        return (Vector3.Dot(currentDir, p_norm) > 0f && Vector3.Dot(nextDir, p_norm) < 0f);
+    }
+
     public void ReflectDir(Vector3 n)
     {  // WATCH OUT!! mDir is point towards n (instead of away!)
         float vDotn = Vector3.Dot(-dir, n);

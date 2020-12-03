@@ -13,6 +13,10 @@ public class SceneNode : MonoBehaviour {
     private Vector3 initialRot;
     private Vector3 initialLocalRot;
     public float rotationSpeed;
+    public GameObject planePref = null;
+    private GameObject plane = null;
+    private Vector3 location;
+    private Quaternion rotation;
     // Use this for initialization
     protected void Start () {
         InitializeSceneNode();
@@ -72,6 +76,16 @@ public class SceneNode : MonoBehaviour {
         mCombinedParentXform = Matrix4x4.identity;
     }
 
+    public Vector3 GetLocation()
+    {
+        return location;
+    }
+
+    public Quaternion GetRotation()
+    {
+        return rotation;
+    }
+
     // This must be called _BEFORE_ each draw!! 
     public void CompositeXform(ref Matrix4x4 parentXform)
     {
@@ -80,6 +94,8 @@ public class SceneNode : MonoBehaviour {
         
         mCombinedParentXform = parentXform * orgT * trs;
 
+        location = mCombinedParentXform.GetColumn(3);
+        rotation = Quaternion.LookRotation(mCombinedParentXform.GetColumn(2), mCombinedParentXform.GetColumn(1));
 
         // propagate to all children
         foreach (Transform child in transform)
