@@ -66,7 +66,7 @@ public class PinballScript : MonoBehaviour
     }
 
     public void ReflectDir(Vector3 n)
-    {  // WATCH OUT!! mDir is point towards n (instead of away!)
+    {  
         float vDotn = Vector3.Dot(-dir, n);
         SetDir(2 * vDotn * n + dir);
     }
