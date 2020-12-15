@@ -11,11 +11,11 @@ public class PinballScript : MonoBehaviour
     private float velocity;
     private Vector3 initPos;
     private Vector3 nextPos;
-    [SerializeField] private float gravity;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        velocity = 0f;
         initPos = transform.position;
         dir = Vector3.up;
     }
@@ -29,8 +29,7 @@ public class PinballScript : MonoBehaviour
         }
         else
         {
-            transform.position +=  Time.deltaTime * dir;
-            dir -= new Vector3(0, Time.deltaTime*gravity, 0);
+            transform.position += velocity * Time.deltaTime * dir;
         }
     }
 
@@ -91,7 +90,6 @@ public class PinballScript : MonoBehaviour
 
     public void SetVelocity(float v)
     {
-        dir = v * dir.normalized;
         velocity = v;
     }
 
